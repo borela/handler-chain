@@ -11,7 +11,7 @@ npm install --save ctrine-react-ui-handler-chain
 ```js
 import autobind from 'autobind-decorator'
 import React, { Component } from 'react'
-import { createChain, executeChain } from 'ctrine-react-ui-handler-chain'
+import { createChain, executeChain } from 'handler-chain'
 
 class SomeComponent extends Component {
   handler1(e) {
