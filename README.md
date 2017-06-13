@@ -3,7 +3,7 @@ Event handler chain for ReactJS components.
 ## Installation
 
 ```sh
-npm install --save ctrine-react-ui-handler-chain
+npm install --save handler-chain
 ```
 
 ## Usage
