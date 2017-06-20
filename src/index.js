@@ -25,7 +25,7 @@ function cancelEvent(e) {
  * “true” to break the chain, any falsy value will be ignored and the next handler
  * in the chain will be executed.
  */
-export type Handler = (any) => boolean|undefined
+export type Handler = (...args:any) => boolean | void
 
 /**
  * Executes the chain of handlers with the provided arguments.
