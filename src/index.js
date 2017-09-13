@@ -35,7 +35,7 @@ export function executeChain(args:any[], ...handlers:Handler[]) {
   for (let handler of handlers) {
     if (handler(...args)) {
       cancelEvent(e)
-      return
+      return true
     }
   }
 }
@@ -44,9 +44,7 @@ export function executeChain(args:any[], ...handlers:Handler[]) {
  * Creates a function that can be used as an event handler for React components.
  */
 export function createChain(...handlers:Handler[]) {
-  return (e, ...otherArgs) => {
-    executeChain([ e, ...otherArgs ], ...handlers)
-  }
+  return (e, ...otherArgs) => executeChain([ e, ...otherArgs ], ...handlers)
 }
 
 export default createChain
