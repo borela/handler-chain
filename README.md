@@ -30,10 +30,11 @@ class SomeComponent extends Component {
   }
 
   @autobind
-  mainHandler(e) {
+  mainHandler(e, ...otherArgs) {
     executeChain(
-      // Array containing all the event arguments.
-      [e],
+      // Array containing all the event arguments. For system events, it is
+      // important to pass the “e” argument as the first item in the array.
+      [e, ...otherArgs],
       // List of handlers to be executed.
       this.handler1,
       this.handler2,
