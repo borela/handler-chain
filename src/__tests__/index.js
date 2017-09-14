@@ -12,7 +12,7 @@
 
 import React from 'react'
 import { shallow } from 'enzyme'
-import { createChain } from '..'
+import { createChain, executeChain } from '..'
 
 class SomeComponent extends React.Component {
   render() {
@@ -20,48 +20,88 @@ class SomeComponent extends React.Component {
   }
 }
 
-it('Execute the chain', () => {
-  const HANDLER1 = jest.fn()
-  const HANDLER2 = jest.fn()
-  const HANDLER3 = jest.fn()
+describe('Function “createChain”', () => {
+  it('executes the chain', () => {
+    const HANDLER1 = jest.fn()
+    const HANDLER2 = jest.fn()
+    const HANDLER3 = jest.fn()
 
-  const WRAPPER = shallow(
-    <SomeComponent
-      onClick={createChain(
-        HANDLER1,
-        HANDLER2,
-        HANDLER3
-      )}
-    />
-  )
+    const WRAPPER = shallow(
+      <SomeComponent
+        onClick={createChain(
+          HANDLER1,
+          HANDLER2,
+          HANDLER3
+        )}
+      />
+    )
 
-  WRAPPER.simulate('click')
+    WRAPPER.simulate('click')
 
-  expect(HANDLER1).toHaveBeenCalled()
-  expect(HANDLER2).toHaveBeenCalled()
-  expect(HANDLER3).toHaveBeenCalled()
+    expect(HANDLER1).toHaveBeenCalled()
+    expect(HANDLER2).toHaveBeenCalled()
+    expect(HANDLER3).toHaveBeenCalled()
+  })
+
+  it('breaks the chain by returning “true”', () => {
+    const BREAKTHECHAIN = jest.fn(() => true)
+    const HANDLER1 = jest.fn()
+    const HANDLER2 = jest.fn()
+    const HANDLER3 = jest.fn()
+
+    const WRAPPER = shallow(
+      <SomeComponent
+        onClick={createChain(
+          HANDLER1,
+          BREAKTHECHAIN,
+          HANDLER2,
+          HANDLER3
+        )}
+      />
+    )
+
+    WRAPPER.simulate('click')
+
+    expect(HANDLER1).toHaveBeenCalled()
+    expect(HANDLER2).not.toHaveBeenCalled()
+    expect(HANDLER3).not.toHaveBeenCalled()
+  })
 })
 
-it('Break the chain by returning “true”', () => {
-  const BREAKTHECHAIN = jest.fn(() => true)
-  const HANDLER1 = jest.fn()
-  const HANDLER2 = jest.fn()
-  const HANDLER3 = jest.fn()
+describe('Function “executeChain”', () => {
+  it('executes the chain', () => {
+    const HANDLER1 = jest.fn()
+    const HANDLER2 = jest.fn()
+    const HANDLER3 = jest.fn()
 
-  const WRAPPER = shallow(
-    <SomeComponent
-      onClick={createChain(
-        HANDLER1,
-        BREAKTHECHAIN,
-        HANDLER2,
-        HANDLER3
-      )}
-    />
-  )
+    executeChain(
+      [],
+      HANDLER1,
+      HANDLER2,
+      HANDLER3
+    )
 
-  WRAPPER.simulate('click')
+    expect(HANDLER1).toHaveBeenCalled()
+    expect(HANDLER2).toHaveBeenCalled()
+    expect(HANDLER3).toHaveBeenCalled()
+  })
 
-  expect(HANDLER1).toHaveBeenCalled()
-  expect(HANDLER2).not.toHaveBeenCalled()
-  expect(HANDLER3).not.toHaveBeenCalled()
+  it('breaks the chain by returning “true”', () => {
+    const BREAKTHECHAIN = jest.fn(() => true)
+    const HANDLER1 = jest.fn()
+    const HANDLER2 = jest.fn()
+    const HANDLER3 = jest.fn()
+
+    executeChain(
+      [],
+      HANDLER1,
+      BREAKTHECHAIN,
+      HANDLER2,
+      HANDLER3
+    )
+
+    expect(HANDLER1).toHaveBeenCalled()
+    expect(HANDLER2).not.toHaveBeenCalled()
+    expect(HANDLER3).not.toHaveBeenCalled()
+  })
 })
