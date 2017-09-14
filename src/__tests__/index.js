@@ -21,47 +21,47 @@ class SomeComponent extends React.Component {
 }
 
 it('Execute the chain', () => {
-  let handler1 = jest.fn()
-  let handler2 = jest.fn()
-  let handler3 = jest.fn()
+  const HANDLER1 = jest.fn()
+  const HANDLER2 = jest.fn()
+  const HANDLER3 = jest.fn()
 
   const WRAPPER = shallow(
     <SomeComponent
       onClick={createChain(
-        handler1,
-        handler2,
-        handler3
+        HANDLER1,
+        HANDLER2,
+        HANDLER3
       )}
     />
   )
 
   WRAPPER.simulate('click')
 
-  expect(handler1).toHaveBeenCalled()
-  expect(handler2).toHaveBeenCalled()
-  expect(handler3).toHaveBeenCalled()
+  expect(HANDLER1).toHaveBeenCalled()
+  expect(HANDLER2).toHaveBeenCalled()
+  expect(HANDLER3).toHaveBeenCalled()
 })
 
 it('Break the chain by returning “true”', () => {
-  let breakTheChain = jest.fn(() => true)
-  let handler1 = jest.fn()
-  let handler2 = jest.fn()
-  let handler3 = jest.fn()
+  const BREAKTHECHAIN = jest.fn(() => true)
+  const HANDLER1 = jest.fn()
+  const HANDLER2 = jest.fn()
+  const HANDLER3 = jest.fn()
 
   const WRAPPER = shallow(
     <SomeComponent
       onClick={createChain(
-        handler1,
-        breakTheChain,
-        handler2,
-        handler3
+        HANDLER1,
+        BREAKTHECHAIN,
+        HANDLER2,
+        HANDLER3
       )}
     />
   )
 
   WRAPPER.simulate('click')
 
-  expect(handler1).toHaveBeenCalled()
-  expect(handler2).not.toHaveBeenCalled()
-  expect(handler3).not.toHaveBeenCalled()
+  expect(HANDLER1).toHaveBeenCalled()
+  expect(HANDLER2).not.toHaveBeenCalled()
+  expect(HANDLER3).not.toHaveBeenCalled()
 })
