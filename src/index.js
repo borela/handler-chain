@@ -25,7 +25,7 @@ function cancelEvent(e) {
  * “true” to break the chain, any falsy value will be ignored and the next handler
  * in the chain will be executed.
  */
-export type Handler = (...args:any) => boolean | void
+export type Handler = undefined | (...args:any) => boolean | void
 
 /**
  * Executes the chain of handlers with the provided arguments.
@@ -33,7 +33,7 @@ export type Handler = (...args:any) => boolean | void
 export function executeChain(args:any[], ...handlers:Handler[]) {
   let [e] = args
   for (let handler of handlers) {
-    if (handler(...args)) {
+    if (handler && handler(...args)) {
       cancelEvent(e)
       return true
     }
