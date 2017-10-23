@@ -31,13 +31,14 @@ export type Handler = undefined | (...args:any) => boolean | void
  * Executes the chain of handlers with the provided arguments.
  */
 export function executeChain(args:any[], ...handlers:Handler[]) {
-  let [e] = args
+  let [ e ] = args
   for (let handler of handlers) {
     if (handler && handler(...args)) {
       cancelEvent(e)
       return true
     }
   }
+  return false
 }
 
 /**
